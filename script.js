@@ -136,6 +136,10 @@ let markers = [];
 
 // Add marker
 function addMarker(lat, lon, color, size) {
+  // Create a group to hold both the marker and its ring
+  const markerGroup = new THREE.Group();
+
+  // Create the main marker
   const markerGeometry = new THREE.CircleGeometry(size, 32);
   const markerMaterial = new THREE.MeshBasicMaterial({
     color: color,
@@ -143,16 +147,28 @@ function addMarker(lat, lon, color, size) {
   });
   const marker = new THREE.Mesh(markerGeometry, markerMaterial);
 
+  // Create the white ring around the marker
+  const ringGeometry = new THREE.RingGeometry(size, size * 1.3, 32);
+  const ringMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff,
+    side: THREE.DoubleSide,
+  });
+  const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+
+  // Add both to the group
+  markerGroup.add(marker);
+  markerGroup.add(ring);
+
   const position = latLonToVector3(lat, lon, 1.005);
-  marker.position.copy(position);
+  markerGroup.position.copy(position);
 
-  // Make the marker face outward from the globe center (look away from origin)
+  // Make the marker group face outward from the globe center (look away from origin)
   const normalVector = position.clone().normalize();
-  marker.lookAt(marker.position.clone().add(normalVector));
+  markerGroup.lookAt(markerGroup.position.clone().add(normalVector));
 
-  globe.add(marker);
-  markers.push(marker);
-  return marker;
+  globe.add(markerGroup);
+  markers.push(markerGroup);
+  return markerGroup;
 }
 
 // Clear all markers
