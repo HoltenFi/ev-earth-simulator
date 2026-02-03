@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Globe</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <button id="toggleSidebar" class="toggle-btn">☰</button>
+
+    <div id="sidebar" class="sidebar">
+      <h2>Controls</h2>
+
+      <div class="control-group">
+        <label for="bgColor">Background Color</label>
+        <input type="color" id="bgColor" value="#ffffff" />
+      </div>
+
+      <div class="control-group">
+        <label for="markerColor">Marker Color</label>
+        <input type="color" id="markerColor" value="#E60000" />
+      </div>
+
+      <div class="control-group">
+        <label for="markerSize">Marker Size</label>
+        <input
+          type="range"
+          id="markerSize"
+          min="0.001"
+          max="0.01"
+          step="0.001"
+          value="0.003"
+        />
+        <span id="markerSizeValue">0.003</span>
+      </div>
+
+      <div class="control-group">
+        <label for="ambientLight">Ambient Light</label>
+        <input
+          type="range"
+          id="ambientLight"
+          min="0"
+          max="3"
+          step="0.1"
+          value="1.2"
+        />
+        <span id="ambientLightValue">1.2</span>
+      </div>
+
+      <div class="control-group">
+        <label for="directionalLight">Directional Light</label>
+        <input
+          type="range"
+          id="directionalLight"
+          min="0"
+          max="3"
+          step="0.1"
+          value="1.0"
+        />
+        <span id="directionalLightValue">1.0</span>
+      </div>
+
+      <div class="control-group">
+        <label for="shadowOpacity">Shadow Opacity</label>
+        <input
+          type="range"
+          id="shadowOpacity"
+          min="0"
+          max="1"
+          step="0.05"
+          value="0.35"
+        />
+        <span id="shadowOpacityValue">0.35</span>
+      </div>
+
+      <div class="control-group">
+        <label for="shadowSize">Shadow Size</label>
+        <input
+          type="range"
+          id="shadowSize"
+          min="2"
+          max="8"
+          step="0.5"
+          value="5"
+        />
+        <span id="shadowSizeValue">5.0</span>
+      </div>
+
+      <div class="control-group">
+        <label for="shadowPosition">Shadow Distance</label>
+        <input
+          type="range"
+          id="shadowPosition"
+          min="-2.5"
+          max="-1.0"
+          step="0.1"
+          value="-1.8"
+        />
+        <span id="shadowPositionValue">1.8</span>
+      </div>
+
+      <div class="control-group">
+        <label>Locations</label>
+        <div id="locationList"></div>
+        <input type="text" id="newLocation" placeholder="Add new location" />
+        <button id="addLocation">Add</button>
+      </div>
+
+      <button id="refreshMarkers">Refresh Markers</button>
+    </div>
+
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
