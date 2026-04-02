@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
-const earthTextureUrl = new URL("../../earth_texture.png", import.meta.url);
-const normalMapUrl = new URL("../../8k_earth_normal_map.png", import.meta.url);
+const earthTextureUrl = new URL("https://ucarecdn.com/b951f9da-3bcc-4743-b543-e5eefe56521f/earth_texture.png", import.meta.url);
+const normalMapUrl = new URL("https://ucarecdn.com/a64a0d09-1b55-4c50-a6d0-0b94275799a2/8k_earth_normal_map.png", import.meta.url);
 
 function loadTexture(loader, url, { onLoad, label }) {
   return loader.load(
