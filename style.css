@@ -85,6 +85,55 @@ body {
   color: #00d4ff;
 }
 
+.control-section {
+  margin-bottom: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.control-section summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #f3f8ff;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.control-section summary::-webkit-details-marker {
+  display: none;
+}
+
+.control-section summary::after {
+  content: "+";
+  float: right;
+  color: #00d4ff;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.control-section[open] summary::after {
+  content: "−";
+}
+
+.control-section .control-group,
+.control-section #refreshMarkers {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.control-section .control-group:first-of-type {
+  margin-top: 16px;
+}
+
+.control-section .control-group:last-of-type,
+.control-section #refreshMarkers {
+  margin-bottom: 16px;
+}
+
 .control-group {
   margin-bottom: 20px;
 }
@@ -109,6 +158,20 @@ body {
   margin-right: 10px;
 }
 
+.control-group select {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+}
+
+.control-group select option {
+  color: #111827;
+}
+
 .control-group span {
   display: inline-block;
   width: 50px;
@@ -128,6 +191,16 @@ body {
   margin-bottom: 10px;
 }
 
+.control-group input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+}
+
 .control-group button {
   width: 50px;
   padding: 8px;
@@ -142,6 +215,87 @@ body {
 
 .control-group button:hover {
   background: #0099ff;
+}
+
+.recording-group {
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+}
+
+.wide-btn,
+.download-btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s, opacity 0.3s;
+}
+
+.wide-btn {
+  background: #34c759;
+  margin-bottom: 10px;
+}
+
+.secondary-btn {
+  background: #0a84ff;
+}
+
+.secondary-btn:hover {
+  background: #0068d6;
+}
+
+.wide-btn:hover {
+  background: #22a446;
+}
+
+.wide-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.download-btn {
+  background: #ff9f0a;
+  margin-bottom: 10px;
+}
+
+.download-btn:hover {
+  background: #e18c00;
+}
+
+.download-btn.disabled {
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+.status-text {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #d0dae7;
+}
+
+#locationStatus {
+  margin-top: 6px;
+}
+
+#locationStatus[data-tone="success"] {
+  color: #8ef0b0;
+}
+
+#locationStatus[data-tone="error"] {
+  color: #ff8a8a;
+}
+
+#locationStatus[data-tone="pending"] {
+  color: #9fd6ff;
 }
 
 #locationList {
