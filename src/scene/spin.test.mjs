@@ -14,7 +14,7 @@ function setup(t, overrides = {}) {
   const settings = Object.assign(createSettings(), overrides);
   const camera = new THREE.PerspectiveCamera();
   const globe = new THREE.Object3D();
-  const controls = { target: new THREE.Vector3() };
+  const controls = { target: new THREE.Vector3(), minDistance: 1.5 };
   const controller = createSpinController({ globe, camera, controls, settings });
   const start = new THREE.Quaternion();
   const end = new THREE.Quaternion().setFromAxisAngle(
@@ -57,6 +57,25 @@ test("independent endpoint zooms apply to the prepared recording frame and fligh
   await animation;
   assertDistance(camera, CLOSE_CAMERA_DISTANCE / 0.5);
   assert.ok(globe.quaternion.angleTo(end) < 1e-7);
+});
+
+test("4× endpoint zoom keeps the camera outside the globe and resets optical zoom in flight", async (t) => {
+  const { controller, camera, start, end } = setup(t, {
+    startZoom: 4,
+    endZoom: 4,
+  });
+  controller.prepareStartView(start);
+  assertDistance(camera, 1.5);
+  assert.ok(Math.abs(camera.position.z / camera.zoom - CLOSE_CAMERA_DISTANCE / 4) < 1e-10);
+
+  const animation = controller.animateBetweenQuaternions(start, end);
+  controller.update(700);
+  assertDistance(camera, DEFAULT_CAMERA_DISTANCE);
+  assert.equal(camera.zoom, 1);
+  controller.update(1400);
+  await animation;
+  assertDistance(camera, 1.5);
+  assert.ok(Math.abs(camera.position.z / camera.zoom - CLOSE_CAMERA_DISTANCE / 4) < 1e-10);
 });
 
 test("zoomed-out start and zoomed-in end stay within orbit distance limits", async (t) => {

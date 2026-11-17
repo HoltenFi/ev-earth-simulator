@@ -34,7 +34,11 @@ export function createSpinController({ globe, camera, controls, settings }) {
 
   function setCameraDistance(distance) {
     controls.target.set(0, 0, 0);
-    camera.position.set(0, 0, distance);
+    // Use optical zoom once moving closer would enter the globe.
+    const safeDistance = Math.max(controls.minDistance ?? 1.5, distance);
+    camera.position.set(0, 0, safeDistance);
+    camera.zoom = safeDistance / distance;
+    camera.updateProjectionMatrix();
     camera.lookAt(0, 0, 0);
   }
 
