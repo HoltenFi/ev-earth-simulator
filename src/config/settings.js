@@ -39,6 +39,8 @@ const DEFAULT_SETTINGS = {
   ],
   startLocation: "Whistler, Canada",
   endLocation: "Berlin, Germany",
+  startZoom: 1,
+  endZoom: 1,
   spinSpeedDegreesPerSecond: 35,
   exportWidth: 1000,
   exportHeight: 1000,

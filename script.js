@@ -94,6 +94,8 @@ function updateRecordingControls() {
 
   ui.previewSpinButton.disabled = disableSpinActions;
   ui.recordSpinButton.disabled = disableSpinActions;
+  ui.startZoomInput.disabled = recordingState.active || spinController.isActive();
+  ui.endZoomInput.disabled = recordingState.active || spinController.isActive();
 }
 
 function updateRouteLocationOptions() {
@@ -243,15 +245,17 @@ async function previewSpinBetweenSelectedLocations() {
       return;
     }
 
-    globeScene.globe.quaternion.copy(targets.startQuaternion);
+    spinController.prepareStartView(targets.startQuaternion);
     await waitForAnimationFrame();
     await waitForAnimationFrame();
 
     setRecordingStatus("Previewing spin...");
-    await spinController.animateBetweenQuaternions(
+    const animation = spinController.animateBetweenQuaternions(
       targets.startQuaternion,
       targets.endQuaternion
     );
+    updateRecordingControls();
+    await animation;
 
     setRecordingStatus("Preview finished. Record the spin when ready.");
   } catch (error) {
@@ -283,7 +287,7 @@ async function recordSpinBetweenSelectedLocations() {
       return;
     }
 
-    globeScene.globe.quaternion.copy(targets.startQuaternion);
+    spinController.prepareStartView(targets.startQuaternion);
     await waitForAnimationFrame();
     await waitForAnimationFrame();
 
@@ -419,6 +423,13 @@ function bindUIEvents() {
     updateRecordingControls();
   });
 
+  for (const key of ["startZoom", "endZoom"]) {
+    ui[`${key}Input`].addEventListener("input", (event) => {
+      settings[key] = parseFloat(event.target.value);
+      ui[`${key}Value`].textContent = `${settings[key].toFixed(2)}×`;
+    });
+  }
+
   ui.spinSpeedInput.addEventListener("input", (event) => {
     settings.spinSpeedDegreesPerSecond = parseFloat(event.target.value);
     ui.spinSpeedValue.textContent =
@@ -482,6 +493,10 @@ function initializeUI() {
   updateRouteLocationOptions();
   updateDownloadLinkState();
   updateRecordingControls();
+  for (const key of ["startZoom", "endZoom"]) {
+    ui[`${key}Input`].value = String(settings[key]);
+    ui[`${key}Value`].textContent = `${settings[key].toFixed(2)}×`;
+  }
   syncExportDimensionInput(ui.exportWidthInput, "exportWidth");
   syncExportDimensionInput(ui.exportHeightInput, "exportHeight");
   setRecordingStatus("Preview the spin or record it as a WebM download.");

@@ -38,7 +38,20 @@ export function createSpinController({ globe, camera, controls, settings }) {
     camera.lookAt(0, 0, 0);
   }
 
+  function prepareStartView(startQuaternion) {
+    globe.quaternion.copy(startQuaternion);
+    setCameraDistance(CLOSE_CAMERA_DISTANCE / settings.startZoom);
+  }
+
   function createFlightSegment(startQuaternion, endQuaternion, durationMs) {
+    const startDistance = CLOSE_CAMERA_DISTANCE / settings.startZoom;
+    const endDistance = CLOSE_CAMERA_DISTANCE / settings.endZoom;
+    const flightDistance = Math.max(
+      DEFAULT_CAMERA_DISTANCE,
+      startDistance,
+      endDistance
+    );
+
     return {
       durationMs,
       apply(progress) {
@@ -51,8 +64,8 @@ export function createSpinController({ globe, camera, controls, settings }) {
 
         const zoomCurve = Math.sin(Math.PI * easedProgress);
         const cameraDistance = THREE.MathUtils.lerp(
-          CLOSE_CAMERA_DISTANCE,
-          DEFAULT_CAMERA_DISTANCE,
+          THREE.MathUtils.lerp(startDistance, endDistance, easedProgress),
+          flightDistance,
           zoomCurve
         );
         setCameraDistance(cameraDistance);
@@ -107,8 +120,7 @@ export function createSpinController({ globe, camera, controls, settings }) {
       (degrees / settings.spinSpeedDegreesPerSecond) * 1000
     );
 
-    globe.quaternion.copy(startQuaternion);
-    setCameraDistance(CLOSE_CAMERA_DISTANCE);
+    prepareStartView(startQuaternion);
     spinAnimation.segments = [
       createFlightSegment(startQuaternion, endQuaternion, rotationDurationMs),
     ];
@@ -124,6 +136,7 @@ export function createSpinController({ globe, camera, controls, settings }) {
 
   return {
     animateBetweenQuaternions,
+    prepareStartView,
     isActive() {
       return spinAnimation.active;
     },
